@@ -20,7 +20,7 @@ content="text/html;charset=utf-8" />
 </head>
 <body>
 <h1> Simple Blog Application </h1>
-<form method="post" action="/simple_blog/inc/update.inc.php">
+<form method="post" action="/fb_blog/inc/update.inc.php">
 <fieldset>
 <legend>New Entry Submission</legend>
 <label>Title

@@ -23,7 +23,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 	$id = $id_obj->fetch();
 	$id_obj->closeCursor();
 	// Send the user to the new entry
-	header('Location: /simple_blog/?page='.$page.'&id='.$id[0]);
+	header('Location: /fb_blog/?page='.$page.'&id='.$id[0]);
 	exit;
 
 }

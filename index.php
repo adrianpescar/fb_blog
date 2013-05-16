@@ -58,10 +58,9 @@ foreach($e as $entry){
 }
 }
 ?>
-<?php if($page=='blog'): ?>
+
 <p class="backlink">
-<a href="admin.php">Post a New Entry</a>
-<?php endif; ?>
+<a href="/fb_blog/admin.php?page=<?php echo $page ?>">Post a New Entry</a>
 
 </a>
 </p>
