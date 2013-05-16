@@ -31,7 +31,7 @@ function retrieveEntries($db,$page,$url=NULL)
 			$fulldisp = 1;
 			$e = array(
 				'title' => 'No Entries Yet',
-				'entry' => '<a href="/admin.php">Post an entry!</a>'
+				'entry' => '<a href="/fb_blog/admin.php?page=<?php echo $page ?>">Post a New Entry</a>'
 				);
 			}		
 		}

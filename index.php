@@ -50,11 +50,12 @@ else
 foreach($e as $entry){
 ?>
 <p>
-	<a href="?id=<?php echo $entry['id']?>">
+	<a href="?page=<?php echo $page ?>&id=<?php echo $entry['id']?>">
 		<?php echo $entry['title']?>
 	</a>
 </p>
 <?php 
+
 }
 }
 ?>
