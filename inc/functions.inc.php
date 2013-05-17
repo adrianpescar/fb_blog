@@ -6,16 +6,16 @@ function retrieveEntries($db,$page,$url=NULL)
 	{
 		$sql= "select title,entry
 				from entries
-				where id=?
+				where url=?
 				limit 1";
 		$stmt =$db->prepare($sql);
-		$stmt->execute(array($_GET['id']));
+		$stmt->execute(array($url));
 		$e= $stmt->fetch();
 		$fulldisp= 1;
 	}
 	else 
 		{
-		$sql= "select id,page,title,entry
+		$sql= "select id,page,title,entry,url
 			from entries
 			where page=?
 			order by created desc";	
@@ -31,7 +31,7 @@ function retrieveEntries($db,$page,$url=NULL)
 			$fulldisp = 1;
 			$e = array(
 				'title' => 'No Entries Yet',
-				'entry' => '<a href="/fb_blog/admin.php?page=<?php echo $page ?>">Post a New Entry</a>'
+				'entry' => '<a href="/fb_blog/admin/"<?php echo $page?>">Post a New Entry</a>'
 				);
 			}		
 		}
@@ -49,5 +49,17 @@ function sanitizeData($data)
 	{
 		return array_map('sanitizedata',$data);
 	}
+}
+?>
+<?php 
+function makeUrl($title)
+{
+	
+$patterns = array(
+'/\s+/',
+'/(?!-)\W+/'
+);
+$replacements = array('-', '');
+return preg_replace($patterns, $replacements, strtolower($title));
 }
 ?>

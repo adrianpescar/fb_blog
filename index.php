@@ -13,9 +13,10 @@ else
 {
 	$page = 'blog';
 }
+$url = (isset($_GET['url'])) ? $_GET['url'] : NULL;
 
+$e = retrieveEntries($db, $page, $url);
 
-$e= retrieveEntries($db,$page,$id);
 $fulldisp = array_pop($e);
 $e=sanitizeData($e);
 ?>
@@ -26,7 +27,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 <head>
 <meta http-equiv="Content-Type"
 content="text/html;charset=utf-8" />
-<link rel="stylesheet" href="css/default.css" type="text/css" />
+<link rel="stylesheet" href="/fb_blog/css/default.css" type="text/css" />
 <title> Simple Blog </title>
 </head>
 <body>
@@ -35,22 +36,23 @@ content="text/html;charset=utf-8" />
 <?php
 if($fulldisp==1)
 {
-?>
-<h2><?php echo $e['title']?></h2>
-<p> <?php  echo $e['entry']?></p>
-<?php if($page=='blog'): ?>
-<p class="backlink">
+	$url= (isset($url)) ? $url : $e['url'];
+	?>
+	<h2><?php echo $e['title']?></h2>
+	<p> <?php  echo $e['entry']?></p>
+	<?php if($page=='blog'): ?>
+	<p class="backlink">
 	<a href="./">Back to Latest Entries</a>
-</p>
-<?php endif?>
-<?php 
+	</p>
+	<?php endif?>
+	<?php 
 }
 else 
 {
 foreach($e as $entry){
 ?>
 <p>
-	<a href="?page=<?php echo $page ?>&id=<?php echo $entry['id']?>">
+	<a href="/fb_blog/<?php echo $entry['page'] ?>/<?php echo $entry['url']?>">
 		<?php echo $entry['title']?>
 	</a>
 </p>
@@ -61,7 +63,7 @@ foreach($e as $entry){
 ?>
 
 <p class="backlink">
-<a href="/fb_blog/admin.php?page=<?php echo $page ?>">Post a New Entry</a>
+<a href="/fb_blog/admin/<?php echo $page ?>">Post a New Entry</a>
 
 </a>
 </p>
