@@ -18,7 +18,9 @@ $url = (isset($_GET['url'])) ? $_GET['url'] : NULL;
 $e = retrieveEntries($db, $page, $url);
 
 $fulldisp = array_pop($e);
+
 $e=sanitizeData($e);
+
 ?>
 <!DOCTYPE html
 PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -32,8 +34,13 @@ content="text/html;charset=utf-8" />
 </head>
 <body>
 <h1> Simple Blog Application </h1>
+<ul id="menu">
+<li><a href="/fb_blog/blog/">Blog</a></li>
+<li><a href="/fb_blog/about/">About the Author</a></li>
+</ul>
 <div id="entries">
 <?php
+
 if($fulldisp==1)
 {
 	$url= (isset($url)) ? $url : $e['url'];
@@ -65,6 +72,7 @@ foreach($e as $entry){
 <p class="backlink">
 <a href="/fb_blog/admin/<?php echo $page ?>">Post a New Entry</a>
 
+</p>
 </a>
 </p>
 </p>

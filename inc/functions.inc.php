@@ -23,9 +23,17 @@ function retrieveEntries($db,$page,$url=NULL)
 		$stmt->execute(array($page));
 		$e=NULL;
 		while($row=$stmt->fetch()){
-			$e[]=$row;
-		}
-		$fulldisp=0;		
+			if ($page=='blog')
+			{
+				$e[]=$row;
+				$fulldisp=0;
+			}
+			else
+			{
+				$e=$row;
+				$fulldisp=1;
+			}
+		}		
 		if(!is_array($e))
 			{
 			$fulldisp = 1;
