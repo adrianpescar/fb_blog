@@ -10,10 +10,29 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 
 	$url = makeUrl($_POST['title']);
 	
-	//$title = $_POST['title'];
-	//$entry = $_POST['entry'];
 	include_once 'db.inc.php';
 	$db = new PDO(DB_INFO, DB_USER, DB_PASS);
+	if(!empty($_POST['id']))
+	{
+		$sql = "update entries
+				set title=?,
+				entry=?,
+				url=?
+				where id=?
+				limit 1";
+		$stmt = $db->prepare($sql);
+		$stmt->execute(
+				array(
+						$_POST['title'],
+						$_POST['entry'],
+						$url,
+						$_POST['id']
+				)
+		);
+		$stmt->closeCursor();
+		}
+	else 
+	{
 	$sql = "INSERT INTO entries (page, title, entry, url)
 		VALUES (?, ?, ?, ?)";
 	$stmt = $db->prepare($sql);
@@ -22,9 +41,11 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 							$_POST['page'], 
 							$_POST['title'], 
 							$_POST['entry'], 
-							$url)
-);
+							$url
+							)
+					);
 	$stmt->closeCursor();
+	}
 	$page = htmlentities(strip_tags($_POST['page']));
 	$id_obj = $db->query("SELECT LAST_INSERT_ID()");
 	$id = $id_obj->fetch();

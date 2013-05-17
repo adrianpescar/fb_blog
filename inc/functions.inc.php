@@ -4,7 +4,7 @@ function retrieveEntries($db,$page,$url=NULL)
 {
 	if(isset($url))
 	{
-		$sql= "select title,entry
+		$sql= "select id,title,entry
 				from entries
 				where url=?
 				limit 1";
@@ -69,5 +69,40 @@ $patterns = array(
 );
 $replacements = array('-', '');
 return preg_replace($patterns, $replacements, strtolower($title));
+}
+?>
+<?php 
+function adminLinks($page,$url)
+{
+	$editURL = "/fb_blog/admin/$page/$url";
+	$deleteURL = "/fb_blog/admin/delete/$url";
+	
+	$admin['edit'] = "<a href=\"$editURL\">edit</a>";
+	$admin['delete'] = "<a href=\"$deleteURL\">delete</a>";
+	return $admin;
+}
+function confirmDelete($db, $url)
+{
+	$e = retrieveEntries($db, '', $url);
+	return <<<FORM
+<form action="/fb_blog/admin.php" method="post">
+<fieldset>
+<legend>Are You Sure?</legend>
+<p>Are you sure you want to delete the entry "$e[title]"?</p>
+<input type="submit" name="submit" value="Yes" />
+<input type="submit" name="submit" value="No" />
+<input type="hidden" name="action" value="delete" />
+<input type="hidden" name="url" value="$url" />
+</fieldset>
+</form>
+FORM;
+}
+function deleteEntry($db, $url)
+{
+	$sql = "DELETE FROM entries
+			WHERE url=?
+			LIMIT 1";
+	$stmt = $db->prepare($sql);
+	return $stmt->execute(array($url));
 }
 ?>

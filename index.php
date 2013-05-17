@@ -44,9 +44,14 @@ content="text/html;charset=utf-8" />
 if($fulldisp==1)
 {
 	$url= (isset($url)) ? $url : $e['url'];
+	$admin = adminLinks($page,$url);
 	?>
 	<h2><?php echo $e['title']?></h2>
 	<p> <?php  echo $e['entry']?></p>
+	<p>
+		<?php echo $admin['edit']?>
+		<?php if($page=='blog') echo $admin['delete']?>
+	</p>
 	<?php if($page=='blog'): ?>
 	<p class="backlink">
 	<a href="./">Back to Latest Entries</a>
