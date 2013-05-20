@@ -1,6 +1,6 @@
 RewriteEngine on
 RewriteBase /fb_blog/
-RewriteRule \.(gif|jpg|png|css|js|inc\.php)$ - [L]
+RewriteRule \.(gif|jpg|png|css|ico|swf|js|inc\.php|php)$ - [L]
 RewriteCond %{REQUEST_URI} ^(.*)$
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^admin/(\w+)(|/)$ admin.php?page=$1 [NC,L]

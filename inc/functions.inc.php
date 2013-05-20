@@ -4,7 +4,7 @@ function retrieveEntries($db,$page,$url=NULL)
 {
 	if(isset($url))
 	{
-		$sql= "select id,title,entry
+		$sql= "select id,title,image,entry
 				from entries
 				where url=?
 				limit 1";
@@ -15,7 +15,7 @@ function retrieveEntries($db,$page,$url=NULL)
 	}
 	else 
 		{
-		$sql= "select id,page,title,entry,url
+		$sql= "select id,page,title,image,entry,url
 			from entries
 			where page=?
 			order by created desc";	
@@ -104,5 +104,16 @@ function deleteEntry($db, $url)
 			LIMIT 1";
 	$stmt = $db->prepare($sql);
 	return $stmt->execute(array($url));
+}
+function formatImage($img=NULL,$alt=NULL)
+{
+	if(isset($img))
+	{
+		return'<img src="' .$img.'"$alt=."'.$alt.'" />';
+	}
+	else 
+	{
+		return NULL;
+	}
 }
 ?>

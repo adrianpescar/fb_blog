@@ -1,5 +1,6 @@
 <?php
 include_once 'functions.inc.php';
+include_once 'images.inc.php';
 
 if($_SERVER['REQUEST_METHOD']=='POST'
 && $_POST['submit']=='Save Entry'
@@ -9,13 +10,32 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 {
 
 	$url = makeUrl($_POST['title']);
-	
+	if(isset($_FILES['image']['tmp_name']))
+	{
+		try 
+		{
+		$img = new ImageHandler("/fb_blog/images/");
+		$img_path = $img->processUploadedImage($_FILES['image']);	
+		}
+		catch(Exception $e)
+		{
+			die($e->getMessage());
+		}
+	}
+	else 
+	{
+		//no img uploaded
+		$img_path = NULL;	
+	}
+
 	include_once 'db.inc.php';
 	$db = new PDO(DB_INFO, DB_USER, DB_PASS);
 	if(!empty($_POST['id']))
 	{
 		$sql = "update entries
-				set title=?,
+				set 
+				title=?,
+				image=?,
 				entry=?,
 				url=?
 				where id=?
@@ -24,6 +44,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 		$stmt->execute(
 				array(
 						$_POST['title'],
+						$img_path,
 						$_POST['entry'],
 						$url,
 						$_POST['id']
@@ -33,13 +54,14 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 		}
 	else 
 	{
-	$sql = "INSERT INTO entries (page, title, entry, url)
-		VALUES (?, ?, ?, ?)";
+	$sql = "INSERT INTO entries (page, title,image, entry, url)
+		VALUES (?, ?, ?, ?, ?)";
 	$stmt = $db->prepare($sql);
 	$stmt->execute(
 					array(
 							$_POST['page'], 
 							$_POST['title'], 
+							$img_path,
 							$_POST['entry'], 
 							$url
 							)

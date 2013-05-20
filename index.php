@@ -45,9 +45,10 @@ if($fulldisp==1)
 {
 	$url= (isset($url)) ? $url : $e['url'];
 	$admin = adminLinks($page,$url);
-	?>
+	$img=formatImage($e['image'],$e['title']);
+	 ?>
 	<h2><?php echo $e['title']?></h2>
-	<p> <?php  echo $e['entry']?></p>
+	<p> <?php  echo $img,'<br />',$e['entry']?></p>
 	<p>
 		<?php echo $admin['edit']?>
 		<?php if($page=='blog') echo $admin['delete']?>
