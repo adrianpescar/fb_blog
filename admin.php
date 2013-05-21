@@ -53,6 +53,11 @@ if(isset($_GET['url']))
 }
 else
 {
+	//check if we're creating a new user
+	if($page == 'createuser')
+	{
+		$create = createUserForm();
+	}
 	// Set the legend
 	$legend = "New Entry Submission";
 	// Set variables to NULL if not editing
@@ -74,11 +79,15 @@ content="text/html;charset=utf-8" />
 <body>
 <h1> Simple Blog Application </h1>
 <?php
-if($page == 'delete'):
-{
-echo $confirm;
-}
-else:
+	if($page == 'delete'):
+	{
+	echo $confirm;
+	}
+	elseif($page == 'creatuser'):
+	{
+	echo $create;
+	}
+	else:
 ?>
 <form method="post" action="/fb_blog/inc/update.inc.php"
 	enctype="multipart/form-data">

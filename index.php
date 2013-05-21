@@ -30,6 +30,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 <meta http-equiv="Content-Type"
 content="text/html;charset=utf-8" />
 <link rel="stylesheet" href="/fb_blog/css/default.css" type="text/css" />
+<link rel="alternate" type="application/rss+xml"
+	title="My simple blog - RSS 2.0"
+	href="/fb_blog/feeds/rss.php" />
 <title> Simple Blog </title>
 </head>
 <body>
@@ -46,7 +49,19 @@ if($fulldisp==1)
 	$url= (isset($url)) ? $url : $e['url'];
 	$admin = adminLinks($page,$url);
 	$img=formatImage($e['image'],$e['title']);
-	 ?>
+	if($page=='blog')
+	{
+		// Load the comment object
+		include_once 'inc/comments.inc.php';
+		$comments = new Comments();
+		$comment_disp = $comments->showComments($e['id']);
+		$comment_form = $comments->showCommentForm($e['id']);
+	}
+	else
+	{
+		$comment_form = NULL;
+	}
+	?>
 	<h2><?php echo $e['title']?></h2>
 	<p> <?php  echo $img,'<br />',$e['entry']?></p>
 	<p>
@@ -57,7 +72,7 @@ if($fulldisp==1)
 	<p class="backlink">
 	<a href="./">Back to Latest Entries</a>
 	</p>
-	<?php endif?>
+	<?php echo $comment_disp, $comment_form;endif;?>
 	<?php 
 }
 else 
@@ -76,11 +91,14 @@ foreach($e as $entry){
 ?>
 
 <p class="backlink">
+<?php if($page=='blog'): ?>
 <a href="/fb_blog/admin/<?php echo $page ?>">Post a New Entry</a>
-
+<?php endif; ?>
 </p>
+<p>
+<a href="/fb_blog/feeds/rss.php">
+Subscribe via RSS!
 </a>
-</p>
 </p>
 </div>
 </body>

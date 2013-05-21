@@ -77,7 +77,60 @@ if($_SERVER['REQUEST_METHOD']=='POST'
 	exit;
 
 }
-
+else if ($_SERVER['REQUEST_METHOD']== 'POST'&& $_POST['submit'] =='Post Comment')
+{
+	include_once 'comments.inc.php';
+	$comments = new Comments();
+	//save the comm
+	if($comments->saveComment($_POST))
+	{
+		if(isset($_SERVER['HTTP_REFERER']))
+		{
+			$loc= $_SERVER['HTTP_REFERER'];
+		}
+		else
+		{
+			$loc = '../';
+		}
+		header('Location:'.$loc);
+		exit;
+	}
+	else {
+		exit('Something went wrong while saving the comment.');
+	}
+}
+else if ($_GET['action']=='comment_delete')
+{
+	include_once 'comments.inc.php';
+	$comments = new Comments();
+	echo $comments->confirmDelete($_GET['id']);
+	exit;
+}
+else if($_SERVER['REQUEST_METHOD']=="POST" && $_POST['action']=='comment_delete')
+{
+//store the entry from witch we came
+$loc = isset($_POST['url']) ? $_POST['url'] : '../';
+if($_POST['confirm']== "Yes")
+{
+	include_once 'comments.inc.php';
+	$comments=new Comments();
+	if($comments->deleteComment($_POST['id']))
+	{
+		header('Location:'.$loc);
+		exit;
+	}
+	//if del fails
+	else
+	{
+		exit('Could not delete the comment');
+	}
+}
+else //if user clicked "No"
+{
+	header('Location: '.$loc);
+	exit;
+}
+}
 else
 {
 header('Location: ../');

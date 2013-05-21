@@ -4,7 +4,7 @@ function retrieveEntries($db,$page,$url=NULL)
 {
 	if(isset($url))
 	{
-		$sql= "select id,title,image,entry
+		$sql= "select id,title,image,entry,created
 				from entries
 				where url=?
 				limit 1";
@@ -15,7 +15,7 @@ function retrieveEntries($db,$page,$url=NULL)
 	}
 	else 
 		{
-		$sql= "select id,page,title,image,entry,url
+		$sql= "select id,page,title,image,entry,url,created
 			from entries
 			where page=?
 			order by created desc";	
@@ -115,5 +115,25 @@ function formatImage($img=NULL,$alt=NULL)
 	{
 		return NULL;
 	}
+	function createUserForm()
+	{
+		return <<<FORM
+<form action="/fb_blog/inc/update.inc.php" method="post">
+	<fieldset>
+		<legend>Create a New Administrator</legend>
+		<label>Username
+			<input type="text" name="username" maxlength="75" />
+		</label>
+		<label>Password
+			<input type="password" name="password" />
+		</label>
+		<input type="submit" name="submit" value="Create" />
+		<input type="submit" name="submit" value="Cancel" />
+		<input type="hidden" name="action" value="createuser" />
+	</fieldset>
+</form>
+FORM;
+	}
+	
 }
 ?>
