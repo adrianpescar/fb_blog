@@ -86,14 +86,14 @@ function confirmDelete($db, $url)
 	$e = retrieveEntries($db, '', $url);
 	return <<<FORM
 <form action="/fb_blog/admin.php" method="post">
-<fieldset>
-<legend>Are You Sure?</legend>
-<p>Are you sure you want to delete the entry "$e[title]"?</p>
-<input type="submit" name="submit" value="Yes" />
-<input type="submit" name="submit" value="No" />
-<input type="hidden" name="action" value="delete" />
-<input type="hidden" name="url" value="$url" />
-</fieldset>
+	<fieldset>
+		<legend>Are You Sure?</legend>
+			<p>Are you sure you want to delete the entry "$e[title]"?</p>
+		<input type="submit" name="submit" value="Yes" />
+		<input type="submit" name="submit" value="No" />
+		<input type="hidden" name="action" value="delete" />
+		<input type="hidden" name="url" value="$url" />
+	</fieldset>
 </form>
 FORM;
 }
@@ -115,9 +115,10 @@ function formatImage($img=NULL,$alt=NULL)
 	{
 		return NULL;
 	}
-	function createUserForm()
-	{
-		return <<<FORM
+}
+function createUserForm()
+{
+	return <<<FORM
 <form action="/fb_blog/inc/update.inc.php" method="post">
 	<fieldset>
 		<legend>Create a New Administrator</legend>
@@ -133,7 +134,7 @@ function formatImage($img=NULL,$alt=NULL)
 	</fieldset>
 </form>
 FORM;
-	}
-	
 }
+	
+
 ?>

@@ -23,7 +23,7 @@ class ImageHandler
 		
 		if($err != UPLOAD_ERR_OK)
 		{
-			throw new Exception('Anerror ocurred with the upload!');
+			throw new Exception('An error ocurred with the upload!');
 			return;
 		}
 		//generate resized image

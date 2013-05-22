@@ -1,5 +1,8 @@
 
 <?php 
+
+session_start();
+
 include_once '/inc/functions.inc.php';
 include_once '/inc/db.inc.php';
 $db = new PDO(DB_INFO, DB_USER, DB_PASS);
@@ -41,13 +44,28 @@ content="text/html;charset=utf-8" />
 <li><a href="/fb_blog/blog/">Blog</a></li>
 <li><a href="/fb_blog/about/">About the Author</a></li>
 </ul>
+<?php if(isset($_SESSION['loggedin'])&& $_SESSION['loggedin']==1):?>
+<p id="control_panel">
+	You are logged in!
+	<a href="/fb_blog/inc/update.inc.php?action=logout">Log Out</a>
+</p>
+<?php endif;?>
 <div id="entries">
 <?php
 
 if($fulldisp==1)
 {
 	$url= (isset($url)) ? $url : $e['url'];
-	$admin = adminLinks($page,$url);
+	
+	if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == 1)
+	{
+		$admin= adminLinks($page,$url);
+	}
+	else
+	{
+		$admin= array('edit'=>NULL,'delete'=>NULL);
+	}
+
 	$img=formatImage($e['image'],$e['title']);
 	if($page=='blog')
 	{
@@ -91,7 +109,7 @@ foreach($e as $entry){
 ?>
 
 <p class="backlink">
-<?php if($page=='blog'): ?>
+<?php if($page=='blog'&& isset($_SESSION['loggedin'])&& $_SESSION['loggedin']==1): ?>
 <a href="/fb_blog/admin/<?php echo $page ?>">Post a New Entry</a>
 <?php endif; ?>
 </p>

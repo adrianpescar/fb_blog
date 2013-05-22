@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 include_once 'functions.inc.php';
 include_once 'images.inc.php';
 
@@ -130,6 +132,52 @@ else //if user clicked "No"
 	header('Location: '.$loc);
 	exit;
 }
+}
+else if($_SERVER['REQUEST_METHOD'] == 'POST'
+		&& $_POST['action'] == 'login'
+		&& !empty($_POST['username'])
+		&& !empty($_POST['password']))
+	{
+	// Include database credentials and connect to the database
+	include_once 'db.inc.php';
+	$db = new PDO(DB_INFO, DB_USER, DB_PASS);
+	$sql = "SELECT COUNT(*) AS num_users
+			FROM admin
+			WHERE username=?
+			AND password=SHA1(?)";
+	$stmt = $db->prepare($sql);
+	$stmt->execute(array($_POST['username'], $_POST['password']));
+	$response = $stmt->fetch();
+	if($response['num_users'] > 0)
+	{
+		$_SESSION['loggedin'] = 1;
+	}
+	else 
+	{
+		$_SESSION['loggedin']=NULL;
+	}
+	header('Location:/fb_blog/');
+	exit;
+}
+else if($_SERVER['REQUEST_METHOD']=='POST'
+		&& $_POST['action']=='createuser'
+		&& !empty($_POST['username'])
+		&& !empty($_POST['password']))
+{
+	include_once 'db.inc.php';
+	$db = new PDO(DB_INFO,DB_USER,DB_PASS);
+	$sql = "INSERT INTO admin(username,password)
+			values(?,SHA1(?))";
+	$stmt=$db->prepare($sql);
+	$stmt->execute(array($_POST['username'],$_POST['password']));
+	header('Location: /fb_blog/');
+	exit;
+}
+else if($_GET['action']=='logout')
+{
+	session_destroy();
+	header('Location: ../');
+	exit;
 }
 else
 {
