@@ -84,8 +84,7 @@ else if ($_SERVER['REQUEST_METHOD']== 'POST'&& $_POST['submit'] =='Post Comment'
 	include_once 'comments.inc.php';
 	$comments = new Comments();
 	//save the comm
-	if($comments->saveComment($_POST))
-	{
+	$comments->saveComment($_POST);
 		if(isset($_SERVER['HTTP_REFERER']))
 		{
 			$loc= $_SERVER['HTTP_REFERER'];
@@ -96,10 +95,7 @@ else if ($_SERVER['REQUEST_METHOD']== 'POST'&& $_POST['submit'] =='Post Comment'
 		}
 		header('Location:'.$loc);
 		exit;
-	}
-	else {
-		exit('Something went wrong while saving the comment.');
-	}
+
 }
 else if ($_GET['action']=='comment_delete')
 {
@@ -181,6 +177,8 @@ else if($_GET['action']=='logout')
 }
 else
 {
+unset($_SESSION['c_name'], $_SESSION['c_email'],
+			$_SESSION['c_comment'], $_SESSION['error']);
 header('Location: ../');
 }
 ?>

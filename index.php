@@ -74,10 +74,13 @@ if($fulldisp==1)
 		$comments = new Comments();
 		$comment_disp = $comments->showComments($e['id']);
 		$comment_form = $comments->showCommentForm($e['id']);
+		// Generate a Post to Twitter link
+		$twitter = postToTwitter($e['title']);
 	}
 	else
 	{
 		$comment_form = NULL;
+		$twitter = NULL;
 	}
 	?>
 	<h2><?php echo $e['title']?></h2>
@@ -88,6 +91,7 @@ if($fulldisp==1)
 	</p>
 	<?php if($page=='blog'): ?>
 	<p class="backlink">
+	<a href="<?php echo $twitter ?>">Post to Twitter</a><br />
 	<a href="./">Back to Latest Entries</a>
 	</p>
 	<?php echo $comment_disp, $comment_form;endif;?>
